@@ -58,9 +58,12 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 ## 🧑 Autores
 
 <img style="border-radius: 50%;" src="https://github.com/HMDarkFir3.png" width="100px;" alt=""/>
- <h4>Henrique Luís Oliveira Marques</h4>
-
+<h4>Henrique Luís Oliveira Marques</h4>
 [![Linkedin Badge](https://img.shields.io/badge/-Henrique-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/henrique-luís-oliveira-marques-3406361a7/)](https://www.linkedin.com/in/henrique-luís-oliveira-marques-3406361a7/) 
+---
+<img style="border-radius: 50%;" src="https://media-exp1.licdn.com/dms/image/C5603AQGctH94qrj_WA/profile-displayphoto-shrink_400_400/0/1599742973448?e=1622678400&v=beta&t=budFMjRkzgpSR4Wu9cgu6ej_20uZPjOELCFFE5VET4s" width="100px;" alt=""/>
+<h4>Vinícius Andrade</h4> 
+[![Linkedin Badge](https://img.shields.io/badge/-Vinícius-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/vinícius-andrade-a671491b3/)](https://www.linkedin.com/in/vinícius-andrade-a671491b3/) 
 
 ---
 
