@@ -65,7 +65,7 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 1 produto: ");
             scanf("%s", &product1);
 
-            printf("\tDigite a quantidade do(a) %s: ", product1);
+            printf("\tDigite a quantidade de %s: ", product1);
             scanf("%d", &amount1);
 
             jumpLine(); // Pula linha
@@ -73,7 +73,7 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 2 produto: ");
             scanf("%s", &product2);
 
-            printf("\tDigite a quantidade do(a) %s: ", product2);
+            printf("\tDigite a quantidade de) %s: ", product2);
             scanf("%d", &amount2);
 
             jumpLine(); // Pula linha
@@ -81,40 +81,20 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 3 produto: ");
             scanf("%s", &product3);
 
-            printf("\tDigite a quantidade do(a) %s: ", product3);
+            printf("\tDigite a quantidade de %s: ", product3);
             scanf("%d", &amount3);
 
-            int qtd;
-
             // Produto 1
-            fscanf(f, "%d", &qtd);
-            qtd++;
-            fseek(f, 0, SEEK_SET);
-            fprintf(f, "%d", qtd);
-            fseek(f, 0, SEEK_END);
-
             fwrite(&product1, sizeof(product1), 1, f);
             fwrite(&amount1, sizeof(amount1), 1, f);
 
             // Produto 2
-            fscanf(f, "%d", &qtd);
-            qtd++;
-            fseek(f, 0, SEEK_SET);
-            fprintf(f, "%d", qtd);
-            fseek(f, 0, SEEK_END);
-
             fwrite(&product2, sizeof(product2), 1, f);
             fwrite(&amount2, sizeof(amount2), 1, f);
 
             //Produto 3
-            fscanf(f, "%d", &qtd);
-            qtd++;
-            fseek(f, 0, SEEK_SET);
-            fprintf(f, "%d", qtd);
-            fseek(f, 0, SEEK_END);
-
             fwrite(&product3, sizeof(product3), 1, f);
-            fwrite(&amount3, sizeof(amount2), 1, f);
+            fwrite(&amount3, sizeof(amount3), 1, f);
 
             fclose(f);
 
@@ -134,9 +114,6 @@ void dataEntries() { // Entrada de dados
 // 2 --|--
 void dataList() { // Listar dados
     int change;
-
-    //Limpa tela
-    clearScreen();
 
     //Linha superior
     buildMenuTopLine();
@@ -158,12 +135,44 @@ void dataList() { // Listar dados
             menu();
             break;
         case 2:
-            printf("\tListar de dados");
+            clearScreen();
+
+            FILE *f;
+
+            f = fopen("product.txt", "r");
+
+            if(f == NULL) {
+                printf("\tNenhum arquivo encontrado.");
+                Sleep(2000);
+                clearScreen();
+                dataList();
+            }
+
+            printf("\tProdutos:\n");
+
+            fread(&product1, sizeof(product1), 1, f);
+            fread(&amount1, sizeof(amount1), 1, f);
+            printf("\t%s: %d unidades\n", product1, amount1);
+
+            fread(&product2, sizeof(product2), 1, f);
+            fread(&amount2, sizeof(amount2), 1, f);
+            printf("\t%s: %d unidades\n", product2, amount2);
+
+            fread(&product3, sizeof(product3), 1, f);
+            fread(&amount3, sizeof(amount3), 1, f);
+            printf("\t%s: %d unidades\n", product3, amount3);
+
+            jumpLine();
+
+            fclose(f);
+
+            dataList();
             break;
         default:
             clearScreen();
             printf("\tErro no sistema.");
             Sleep(2000);
+            clearScreen();
             dataList();
             break;
     }
@@ -416,6 +425,7 @@ void menu() {
             dataEntries();
             break;
         case 2:
+            clearScreen();
             dataList();
             break;
         case 3:
