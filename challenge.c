@@ -1,6 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-//Utils ----------------------------------------------------|
+//Global variables
+char product1[20];
+char product2[20];
+char product3[20];
+int amount1 = 0;
+int amount2 = 0;
+int amount3 = 0;
+
+//Utils ------------------------------------------------------|X*
 void clearScreen() { // Limpa tela
     system("cls");
 }
@@ -8,11 +17,13 @@ void clearScreen() { // Limpa tela
 void jumpLine() { // Pula linha
     printf("\n");
 }
+// -----------------------------------------------------------|X*
 
-//Menu Options --------------------------------------------|
-//1 --|--
-void dataEntries() {
+// Menu Options ----------------------------------------------|O*
+// 1 --|--
+void dataEntries() { // Entrada de dados
     int change;
+    char file[20];
 
     //Limpa tela
     clearScreen();
@@ -32,12 +43,83 @@ void dataEntries() {
     printf("\tEscolha uma das opcoes acima: ");
     scanf("%d", &change);
 
+    backHere:
+
+
     switch(change) {
         case 1:
             menu();
             break;
         case 2:
-            printf("\tEntrada de dados");
+            clearScreen();
+
+            FILE *f;
+
+            f = fopen("product.txt", "r+");
+
+            if(f == NULL) {
+                f = fopen("product.txt", "w");
+                f = fopen("product.txt", "r+");
+            }
+
+            printf("\tDigite o 1 produto: ");
+            scanf("%s", &product1);
+
+            printf("\tDigite a quantidade do(a) %s: ", product1);
+            scanf("%d", &amount1);
+
+            jumpLine(); // Pula linha
+
+            printf("\tDigite o 2 produto: ");
+            scanf("%s", &product2);
+
+            printf("\tDigite a quantidade do(a) %s: ", product2);
+            scanf("%d", &amount2);
+
+            jumpLine(); // Pula linha
+
+            printf("\tDigite o 3 produto: ");
+            scanf("%s", &product3);
+
+            printf("\tDigite a quantidade do(a) %s: ", product3);
+            scanf("%d", &amount3);
+
+            int qtd;
+
+            // Produto 1
+            fscanf(f, "%d", &qtd);
+            qtd++;
+            fseek(f, 0, SEEK_SET);
+            fprintf(f, "%d", qtd);
+            fseek(f, 0, SEEK_END);
+
+            fwrite(&product1, sizeof(product1), 1, f);
+            fwrite(&amount1, sizeof(amount1), 1, f);
+
+            // Produto 2
+            fscanf(f, "%d", &qtd);
+            qtd++;
+            fseek(f, 0, SEEK_SET);
+            fprintf(f, "%d", qtd);
+            fseek(f, 0, SEEK_END);
+
+            fwrite(&product2, sizeof(product2), 1, f);
+            fwrite(&amount2, sizeof(amount2), 1, f);
+
+            //Produto 3
+            fscanf(f, "%d", &qtd);
+            qtd++;
+            fseek(f, 0, SEEK_SET);
+            fprintf(f, "%d", qtd);
+            fseek(f, 0, SEEK_END);
+
+            fwrite(&product3, sizeof(product3), 1, f);
+            fwrite(&amount3, sizeof(amount2), 1, f);
+
+            fclose(f);
+
+            clearScreen();
+            dataEntries();
             break;
         default:
             clearScreen();
@@ -49,8 +131,8 @@ void dataEntries() {
 
 }
 
-//2 --|--
-void dataList() {
+// 2 --|--
+void dataList() { // Listar dados
     int change;
 
     //Limpa tela
@@ -87,8 +169,8 @@ void dataList() {
     }
 }
 
-//3 --|--
-void dataSearchName() {
+// 3 --|--
+void dataSearchName() { // Pesquisar dados por nome
     int change;
 
     //Limpa tela
@@ -125,8 +207,8 @@ void dataSearchName() {
     }
 }
 
-//4 --|--
-void dataSearchLetter() {
+// 4 --|--
+void dataSearchLetter() { //Pesquisar dados por letra
     int change;
 
     //Limpa tela
@@ -163,8 +245,8 @@ void dataSearchLetter() {
     }
 }
 
-//5 --|--
-void dataEdit() {
+// 5 --|--
+void dataEdit() { // Alterar dados
     int change;
 
     //Limpa tela
@@ -201,8 +283,8 @@ void dataEdit() {
     }
 }
 
-//6 --|--
-void dataDelete() {
+// 6 --|--
+void dataDelete() { // Excluir dados
     int change;
 
     //Limpa tela
@@ -239,13 +321,16 @@ void dataDelete() {
     }
 }
 
-//7 --|--
+// 7 --|--
 void quit() { // Fechar o programa
+    clearScreen();
     printf("\tFinalizando o programa...");
     Sleep(3000);
+    exit(0);
 }
+// ----------------------------------------------------------|O*
 
-//Build Menu -----------------------------------------------|
+// Build Menu -----------------------------------------------|X*
 void buildMenuTopLine() {
     //Menu Top --------------------------------------------|
     printf("\t%c", 201);
@@ -356,9 +441,11 @@ void menu() {
             break;
     }
 }
+// ----------------------------------------------------------|X*
 
-//Home -----------------------------------------------------|
+// Home -----------------------------------------------------|O*
 int main() {
     menu();
     return 0;
 }
+// ----------------------------------------------------------|O*
