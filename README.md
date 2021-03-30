@@ -23,6 +23,14 @@ Manipulador de arquivos.
 
 ---
 
+## ⚙️ Funcionalidades
+
+- [x] Adicionar dados.
+- [x] Listar dados.
+- [x] Pesquisar dados por nome.
+  
+---
+
 ## 📂 Como rodar este projeto
 
 Para clonar e executar este aplicativo, você precisará do [Git](https://git-scm.com) instalado em seu computador.
