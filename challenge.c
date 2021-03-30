@@ -182,9 +182,6 @@ void dataList() { // Listar dados
 void dataSearchName() { // Pesquisar dados por nome
     int change;
 
-    //Limpa tela
-    clearScreen();
-
     //Linha superior
     buildMenuTopLine();
 
@@ -205,7 +202,56 @@ void dataSearchName() { // Pesquisar dados por nome
             menu();
             break;
         case 2:
-            printf("\tPesquisa de dados por nome");
+            clearScreen();
+
+            FILE *f;
+
+            char product[20];
+            int x, y;
+
+            printf("\tProcurar nome: ");
+            scanf("%s", &product);
+
+            f = fopen("product.txt", "r");
+
+            for(x = 0; x < 3; x++) {
+                fread(&product1, sizeof(product1), 1, f);
+                fread(&amount1, sizeof(amount1), 1, f);
+
+                for(y = 0; product1[y] != '\0'; y++) {
+                    if(product[y] != product1[y]) {
+                        break;
+                    }
+                }
+
+                if(product[y] == '\0' && product1[y] == '\0') {
+                    clearScreen();
+
+                    printf("\tNome procurado: \n");
+                    printf("\t%s: %d unidade(s)\n", product1, amount1);
+
+                    jumpLine();
+
+                    fclose(f);
+
+                    dataSearchName();
+                    return;
+                } else {
+                    clearScreen();
+                    printf("\tNenhum registro encontrado.\n");
+
+                    jumpLine();
+
+                    fclose(f);
+
+                    dataSearchName();
+                    return;
+                }
+            }
+
+
+
+
             break;
         default:
             clearScreen();
@@ -429,6 +475,7 @@ void menu() {
             dataList();
             break;
         case 3:
+            clearScreen();
             dataSearchName();
             break;
         case 4:
