@@ -249,9 +249,6 @@ void dataSearchName() { // Pesquisar dados por nome
                 }
             }
 
-
-
-
             break;
         default:
             clearScreen();
@@ -327,7 +324,132 @@ void dataEdit() { // Alterar dados
             menu();
             break;
         case 2:
-            printf("\Alterar dados");
+
+            clearScreen();
+
+            int changeProduct;
+            int n_bytes;
+
+            FILE *f;
+
+            f = fopen("product.txt", "r");
+
+            if(f == NULL) {
+                printf("\tNenhum arquivo encontrado.");
+                Sleep(2000);
+                clearScreen();
+                dataList();
+            }
+
+            printf("\tProdutos:\n");
+
+            fread(&product1, sizeof(product1), 1, f);
+            fread(&amount1, sizeof(amount1), 1, f);
+            printf("\t(1) - %s: %d unidade(s)\n", product1, amount1);
+
+            fread(&product2, sizeof(product2), 1, f);
+            fread(&amount2, sizeof(amount2), 1, f);
+            printf("\t(2) - %s: %d unidade(s)\n", product2, amount2);
+
+            fread(&product3, sizeof(product3), 1, f);
+            fread(&amount3, sizeof(amount3), 1, f);
+            printf("\t(3) - %s: %d unidade(s)\n", product3, amount3);
+
+            jumpLine();
+
+            fclose(f);
+
+            printf("\tEscolha uma das opcoes acima: ");
+            scanf("%d", &changeProduct);
+
+            switch(changeProduct) {
+                case 1:
+
+                    jumpLine();
+
+                    n_bytes = (sizeof(product1) + sizeof(amount1)) * 0;
+
+                    f = fopen("product.txt", "r+");
+
+                    fseek(f, n_bytes, 0);
+
+                    fread(&product1, sizeof(product1), 1, f);
+                    fread(&amount1, sizeof(amount1), 1, f);
+
+                    printf("\tAlterar %s ->: ", product1);
+                    scanf("%s", &product1);
+                    printf("\tAlterar %d unidade(s) ->: ", amount1);
+                    scanf("%d", &amount1);
+
+                    fseek(f, n_bytes, 0);
+
+                    fwrite(&product1, sizeof(product1), 1, f);
+
+                    fclose(f);
+
+                    dataEdit();
+                    break;
+                case 2:
+
+                    jumpLine();
+
+                    n_bytes = (sizeof(product2) + sizeof(amount2)) * 1;
+
+                    f = fopen("product.txt", "r+");
+
+                    fseek(f, n_bytes, 0);
+
+                    fread(&product2, sizeof(product2), 1, f);
+                    fread(&amount2, sizeof(amount2), 1, f);
+
+                    printf("\tAlterar %s ->: ", product2);
+                    scanf("%s", &product2);
+                    printf("\tAlterar %d unidade(s) ->: ", amount2);
+                    scanf("%d", &amount2);
+
+                    fseek(f, n_bytes, 0);
+
+                    fwrite(&product2, sizeof(product2), 1, f);
+
+                    fclose(f);
+
+                    dataEdit();
+                    break;
+                case 3:
+                    jumpLine();
+
+                    n_bytes = (sizeof(product3) + sizeof(amount3)) * 2;
+
+                    f = fopen("product.txt", "r+");
+
+                    fseek(f, n_bytes, 0);
+
+                    fread(&product3, sizeof(product3), 1, f);
+                    fread(&amount3, sizeof(amount3), 1, f);
+
+                    printf("\tAlterar %s ->: ", product3);
+                    scanf("%s", &product3);
+                    printf("\tAlterar %d unidade(s) ->: ", amount3);
+                    scanf("%d", &amount3);
+
+                    fseek(f, n_bytes, 0);
+
+                    fwrite(&product3, sizeof(product3), 1, f);
+                    fwrite(&amount3, sizeof(amount3), 1, f);
+
+                    fclose(f);
+
+                    dataEdit();
+                    break;
+                default:
+                    clearScreen();
+
+                    printf("\tErro no sistema.");
+                    Sleep(2000);
+                    dataEdit();
+                    break;
+            }
+
             break;
         default:
             clearScreen();
