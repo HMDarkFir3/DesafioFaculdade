@@ -216,24 +216,24 @@ void dataSearchName() { // Pesquisar dados por nome
             FILE *f;
 
             char product[20];
-            int x, y;
+            int i, j;
 
-            printf("\tProcurar nome: ");
+            printf("\tProcurar produro pelo nome: ");
             scanf("%s", &product);
 
             f = fopen("product.txt", "r");
 
-            for(x = 0; x < 3; x++) {
+            for(i = 0; i < 3; i++) {
                 fread(&product1, sizeof(product1), 1, f);
                 fread(&amount1, sizeof(amount1), 1, f);
 
-                for(y = 0; product1[y] != '\0'; y++) {
-                    if(product[y] != product1[y]) {
+                for(j = 0; product1[j] != '\0'; j++) {
+                    if(product[j] != product1[j]) {
                         break;
                     }
                 }
 
-                if(product[y] == '\0' && product1[y] == '\0') {
+                if(product[j] == '\0' && product1[j] == '\0') {
                     clearScreen();
 
                     printf("\tNome procurado: \n");
@@ -248,8 +248,8 @@ void dataSearchName() { // Pesquisar dados por nome
                 } else {
                     clearScreen();
                     printf("\tNenhum registro encontrado.\n");
-
-                    jumpLine();
+                    Sleep(2000);
+                    clearScreen();
 
                     fclose(f);
 
@@ -263,6 +263,7 @@ void dataSearchName() { // Pesquisar dados por nome
             clearScreen();
             printf("\tErro no sistema.");
             Sleep(2000);
+            clearScreen();
             dataSearchName();
             break;
     }
@@ -271,9 +272,6 @@ void dataSearchName() { // Pesquisar dados por nome
 // 4 --|--
 void dataSearchLetter() { //Pesquisar dados por letra
     int change;
-
-    //Limpa tela
-    clearScreen();
 
     //Linha superior
     buildMenuTopLine();
@@ -295,7 +293,47 @@ void dataSearchLetter() { //Pesquisar dados por letra
             menu();
             break;
         case 2:
-            printf("\tPesquisa de dados por letra");
+            clearScreen();
+
+            FILE *f;
+
+            char product;
+            int i, j = 0;
+
+            printf("\tProcurar produto pela 1 letra: ");
+            scanf(" %c", &product);
+
+            f = fopen("product.txt", "r");
+
+            for(i = 0; i < 3; i++) {
+                fread(&product1, sizeof(product1), 1, f);
+                fread(&amount1, sizeof(amount1), 1, f);
+
+                if(product == product1[0]) {
+                    clearScreen();
+
+                    printf("\tNome procurado: \n");
+                    printf("\t%s: %d unidade(s)\n", product1, amount1);
+
+                    jumpLine();
+
+                    dataSearchLetter();
+
+                    fclose(f);
+
+                    j++;
+                } else {
+                    clearScreen();
+                    printf("\tNenhum registro encontrado.\n");
+                    Sleep(2000);
+                    clearScreen();
+
+                    dataSearchLetter();
+                    fclose(f);
+                    return;
+                }
+            }
+
             break;
         default:
             clearScreen();
@@ -652,7 +690,7 @@ void quit() { // Fechar o programa
     clearScreen();
     printf("\tFinalizando o programa...");
     Sleep(3000);
-    exit(0);
+    clearScreen();
 }
 // ----------------------------------------------------------|O*
 
@@ -750,6 +788,7 @@ void menu() {
             dataSearchName();
             break;
         case 4:
+            clearScreen();
             dataSearchLetter();
             break;
         case 5:
