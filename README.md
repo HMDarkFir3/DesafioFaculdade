@@ -29,6 +29,7 @@ Manipulador de arquivos.
 - [x] Listar dados.
 - [x] Pesquisar dados por nome.
 - [x] Alterar dados.
+- [x] Deletar dados.
   
 ---
 
