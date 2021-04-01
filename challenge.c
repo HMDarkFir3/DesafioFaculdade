@@ -1,3 +1,4 @@
+//Libs
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -245,16 +246,6 @@ void dataSearchName() { // Pesquisar dados por nome
 
                     dataSearchName();
                     return;
-                } else {
-                    clearScreen();
-                    printf("\tNenhum registro encontrado.\n");
-                    Sleep(2000);
-                    clearScreen();
-
-                    fclose(f);
-
-                    dataSearchName();
-                    return;
                 }
             }
 
@@ -303,6 +294,8 @@ void dataSearchLetter() { //Pesquisar dados por letra
             printf("\tProcurar produto pela 1 letra: ");
             scanf(" %c", &product);
 
+            clearScreen();
+
             f = fopen("product.txt", "r");
 
             for(i = 0; i < 3; i++) {
@@ -310,35 +303,32 @@ void dataSearchLetter() { //Pesquisar dados por letra
                 fread(&amount1, sizeof(amount1), 1, f);
 
                 if(product == product1[0]) {
-                    clearScreen();
-
                     printf("\tNome procurado: \n");
                     printf("\t%s: %d unidade(s)\n", product1, amount1);
 
                     jumpLine();
 
-                    dataSearchLetter();
-
-                    fclose(f);
-
                     j++;
-                } else {
-                    clearScreen();
-                    printf("\tNenhum registro encontrado.\n");
-                    Sleep(2000);
-                    clearScreen();
-
-                    dataSearchLetter();
-                    fclose(f);
-                    return;
                 }
             }
+
+            if(j == 0) {
+                clearScreen();
+                printf("\tNenhum registro encontrado.\n");
+                Sleep(2000);
+                clearScreen();
+            }
+
+            fclose(f);
+
+            dataSearchLetter();
 
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf("\tErro no sistema.\n");
             Sleep(2000);
+            clearScreen();
             dataSearchLetter();
             break;
     }
@@ -690,12 +680,12 @@ void quit() { // Fechar o programa
     clearScreen();
     printf("\tFinalizando o programa...");
     Sleep(3000);
-    clearScreen();
+    exit(0);
 }
 // ----------------------------------------------------------|O*
 
 // Build Menu -----------------------------------------------|X*
-void buildMenuTopLine() {
+void buildMenuTopLine() { // Linha superior do menu
     //Menu Top --------------------------------------------|
     printf("\t%c", 201);
 
@@ -708,7 +698,7 @@ void buildMenuTopLine() {
     jumpLine();
 }
 
-void buildMenuItem(char str[]) {
+void buildMenuItem(char str[]) { // Seleção do menu
     int countLetters = 0;
 
     for(int i = 0; i < 36; i++) {
@@ -730,7 +720,7 @@ void buildMenuItem(char str[]) {
     printf("%c", 186);
 }
 
-void buildMenuBottomLine() {
+void buildMenuBottomLine() { // Linha inferior do menu
     //Menu Bottom -----------------------------------------|
     printf("\t%c", 200);
 
@@ -743,7 +733,7 @@ void buildMenuBottomLine() {
     jumpLine(); //
 }
 
-void menu() {
+void menu() { // Menu
     //Variavel
     int change;
 
@@ -811,7 +801,7 @@ void menu() {
 // ----------------------------------------------------------|X*
 
 // Home -----------------------------------------------------|O*
-int main() {
+int main() { // Aplicação
     menu();
     return 0;
 }
