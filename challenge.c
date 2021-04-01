@@ -56,12 +56,7 @@ void dataEntries() { // Entrada de dados
 
             FILE *f;
 
-            f = fopen("product.txt", "r+");
-
-            if(f == NULL) {
-                f = fopen("product.txt", "w");
-                f = fopen("product.txt", "r+");
-            }
+            f = fopen("product.txt", "w");
 
             printf("\tDigite o 1 produto: ");
             scanf("%s", &product1);
@@ -150,7 +145,7 @@ void dataList() { // Listar dados
                 dataList();
             }
 
-            printf("\tProdutos:\n");
+            printf("\tProduto(s):\n");
 
             fread(&product1, sizeof(product1), 1, f);
             fread(&amount1, sizeof(amount1), 1, f);
@@ -431,9 +426,6 @@ void dataEdit() { // Alterar dados
 void dataDelete() { // Excluir dados
     int change;
 
-    //Limpa tela
-    clearScreen();
-
     //Linha superior
     buildMenuTopLine();
 
@@ -457,132 +449,44 @@ void dataDelete() { // Excluir dados
 
             clearScreen();
 
-            int changeProduct;
+            int n_reg;
             int n_bytes;
 
             FILE *f;
 
-            f = fopen("product.txt", "r");
+            n_reg = searchName();
 
-            if(f == NULL) {
-                printf("\tNenhum arquivo encontrado.");
+            if(n_reg == -1) {
+                clearScreen();
+                printf("\tNenhum registro encontrado.\n");
                 Sleep(2000);
                 clearScreen();
-                dataList();
+                dataDelete();
+                return;
             }
 
-            printf("\tProdutos:\n");
+            n_bytes = (sizeof(product1) + sizeof(amount1)) * n_reg;
+
+            f = fopen("product.txt", "r+");
+
+            fseek(f, n_bytes, 0);
 
             fread(&product1, sizeof(product1), 1, f);
             fread(&amount1, sizeof(amount1), 1, f);
 
-            if(product1 && amount1) {
-                printf("\t(1) - %s: %d unidade(s)\n", product1, amount1);
-            }
+            printf("\t%s excluido(a) com sucesso.\n", product1);
 
-            fread(&product2, sizeof(product2), 1, f);
-            fread(&amount2, sizeof(amount2), 1, f);
+            product1[0] = '*';
+            amount1 = NULL;
 
-            if(product2 && amount2) {
-                printf("\t(2) - %s: %d unidade(s)\n", product2, amount2);
-            }
+            fseek(f, n_bytes, 0);
 
-            fread(&product3, sizeof(product3), 1, f);
-            fread(&amount3, sizeof(amount3), 1, f);
-
-            if(product3 && amount3) {
-                printf("\t(3) - %s: %d unidade(s)\n", product3, amount3);
-            }
-
-            jumpLine();
+            fwrite(&product1, sizeof(product1), 1, f);
+            fwrite(&amount1, sizeof(amount1), 1, f);
 
             fclose(f);
 
-            printf("\tEscolha uma das opcoes acima: ");
-            scanf("%d", &changeProduct);
-
-            switch(changeProduct) {
-                case 1:
-
-                    jumpLine();
-
-                    n_bytes = (sizeof(product1) + sizeof(amount1)) * 0;
-
-                    f = fopen("product.txt", "r+");
-
-                    fseek(f, n_bytes, 0);
-
-                    fread(&product1, sizeof(product1), 1, f);
-                    fread(&amount1, sizeof(amount1), 1, f);
-
-                    product1[0] = '\0';
-                    amount1 = NULL;
-
-                    fseek(f, n_bytes, 0);
-
-                    fwrite(&product1, sizeof(product1), 1, f);
-                    fwrite(&amount1, sizeof(amount1), 1, f);
-
-                    fclose(f);
-
-                    dataDelete();
-                    break;
-                case 2:
-                    jumpLine();
-
-                    n_bytes = (sizeof(product2) + sizeof(amount2)) * 1;
-
-                    f = fopen("product.txt", "r+");
-
-                    fseek(f, n_bytes, 0);
-
-                    fread(&product2, sizeof(product2), 1, f);
-                    fread(&amount2, sizeof(amount2), 1, f);
-
-                    product2[0] = '\0';
-                    amount2 = NULL;
-
-                    fseek(f, n_bytes, 0);
-
-                    fwrite(&product2, sizeof(product2), 1, f);
-                    fwrite(&amount2, sizeof(amount2), 1, f);
-
-                    fclose(f);
-
-                    dataDelete();
-                    break;
-                case 3:
-                    jumpLine();
-
-                    n_bytes = (sizeof(product3) + sizeof(amount3)) * 2;
-
-                    f = fopen("product.txt", "r+");
-
-                    fseek(f, n_bytes, 0);
-
-                    fread(&product3, sizeof(product3), 1, f);
-                    fread(&amount3, sizeof(amount3), 1, f);
-
-                    product3[0] = '\0';
-                    amount3 = NULL;
-
-                    fseek(f, n_bytes, 0);
-
-                    fwrite(&product3, sizeof(product3), 1, f);
-                    fwrite(&amount3, sizeof(amount3), 1, f);
-
-                    fclose(f);
-
-                    dataDelete();
-                    break;
-                default:
-                    clearScreen();
-
-                    printf("\tErro no sistema.");
-                    Sleep(2000);
-                    dataEdit();
-                    break;
-            }
+            dataDelete();
 
             break;
         default:
@@ -704,6 +608,7 @@ void menu() { // Menu
             dataEdit();
             break;
         case 6:
+            clearScreen();
             dataDelete();
             break;
         case 7:
