@@ -1,6 +1,13 @@
 //Libs
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
 
 //Global variables
 char product1[20];
@@ -17,6 +24,45 @@ void clearScreen() { // Limpa tela
 
 void jumpLine() { // Pula linha
     printf("\n");
+}
+
+int searchName() {
+    clearScreen();
+
+    FILE *f;
+
+    char product[20];
+    int i, j;
+
+    printf("\tProcurar produro pelo nome: ");
+    scanf("%s", &product);
+
+    f = fopen("product.txt", "r");
+
+    for(i = 0; i < 3; i++) {
+        fread(&product1, sizeof(product1), 1, f);
+        fread(&amount1, sizeof(amount1), 1, f);
+
+        for(j = 0; product1[j] != '\0'; j++) {
+            if(product[j] != product1[j]) {
+                break;
+            }
+        }
+
+        if(product[j] == '\0' && product1[j] == '\0') {
+            clearScreen();
+
+            printf("\tNome procurado: \n");
+            printf("\t%s: %d unidade(s)\n", product1, amount1);
+
+            jumpLine();
+
+            fclose(f);
+            return i;
+        }
+    }
+    fclose(f);
+    return -1;
 }
 // -----------------------------------------------------------|X*
 
@@ -44,9 +90,6 @@ void dataEntries() { // Entrada de dados
     printf("\tEscolha uma das opcoes acima: ");
     scanf("%d", &change);
 
-    backHere:
-
-
     switch(change) {
         case 1:
             menu();
@@ -61,24 +104,52 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 1 produto: ");
             scanf("%s", &product1);
 
+            backHere1: //GOTO
+
             printf("\tDigite a quantidade de %s: ", product1);
             scanf("%d", &amount1);
+
+            if(amount1 < 0) {
+                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
+
+                jumpLine();
+                goto backHere1;
+            }
 
             jumpLine(); // Pula linha
 
             printf("\tDigite o 2 produto: ");
             scanf("%s", &product2);
 
+            backHere2: // GOTO
+
             printf("\tDigite a quantidade de) %s: ", product2);
             scanf("%d", &amount2);
+
+            if(amount2 < 0) {
+                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
+
+                jumpLine();
+                goto backHere2;
+            }
+
 
             jumpLine(); // Pula linha
 
             printf("\tDigite o 3 produto: ");
             scanf("%s", &product3);
 
+            backHere3: // GOTO
+
             printf("\tDigite a quantidade de %s: ", product3);
             scanf("%d", &amount3);
+
+            if(amount3 < 0) {
+                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
+
+                jumpLine();
+                goto backHere3;
+            }
 
             // Produto 1
             fwrite(&product1, sizeof(product1), 1, f);
@@ -99,7 +170,7 @@ void dataEntries() { // Entrada de dados
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             clearScreen();
             dataEntries();
@@ -176,51 +247,12 @@ void dataList() { // Listar dados
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             clearScreen();
             dataList();
             break;
     }
-}
-
-int searchName() {
-    clearScreen();
-
-    FILE *f;
-
-    char product[20];
-    int i, j;
-
-    printf("\tProcurar produro pelo nome: ");
-    scanf("%s", &product);
-
-    f = fopen("product.txt", "r");
-
-    for(i = 0; i < 3; i++) {
-        fread(&product1, sizeof(product1), 1, f);
-        fread(&amount1, sizeof(amount1), 1, f);
-
-        for(j = 0; product1[j] != '\0'; j++) {
-            if(product[j] != product1[j]) {
-                break;
-            }
-        }
-
-        if(product[j] == '\0' && product1[j] == '\0') {
-            clearScreen();
-
-            printf("\tNome procurado: \n");
-            printf("\t%s: %d unidade(s)\n", product1, amount1);
-
-            jumpLine();
-
-            fclose(f);
-            return i;
-        }
-    }
-    fclose(f);
-    return -1;
 }
 
 // 3 --|--
@@ -262,7 +294,7 @@ void dataSearchName() { // Pesquisar dados por nome
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             clearScreen();
             dataSearchName();
@@ -336,7 +368,7 @@ void dataSearchLetter() { //Pesquisar dados por letra
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.\n");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             clearScreen();
             dataSearchLetter();
@@ -414,7 +446,7 @@ void dataEdit() { // Alterar dados
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             clearScreen();
             dataEdit();
@@ -474,7 +506,7 @@ void dataDelete() { // Excluir dados
             fread(&product1, sizeof(product1), 1, f);
             fread(&amount1, sizeof(amount1), 1, f);
 
-            printf("\t%s excluido(a) com sucesso.\n", product1);
+            printf(GRN "\t%s excluido(a) com sucesso.\n" RESET, product1);
 
             product1[0] = '*';
             amount1 = NULL;
@@ -491,8 +523,9 @@ void dataDelete() { // Excluir dados
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
+            clearScreen();
             dataDelete();
             break;
     }
@@ -500,9 +533,19 @@ void dataDelete() { // Excluir dados
 
 // 7 --|--
 void quit() { // Fechar o programa
+
+    for(int i = 3; i >= 0; i--) {
+        clearScreen();
+        printf("\tFinalizando o programa... Aguarde.\n");
+        printf("\t%d\n", i);
+        Sleep(1000);
+    }
+
     clearScreen();
-    printf("\tFinalizando o programa...");
-    Sleep(3000);
+
+    printf("\tPrograma encerrado.");
+    Sleep(1500);
+
     exit(0);
 }
 // ----------------------------------------------------------|O*
@@ -616,7 +659,7 @@ void menu() { // Menu
             break;
         default:
             clearScreen();
-            printf("\tErro no sistema.");
+            printf(RED "\tErro no sistema." RESET);
             Sleep(2000);
             menu();
             break;
