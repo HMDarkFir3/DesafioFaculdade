@@ -6,7 +6,6 @@
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define YEL   "\x1B[33m"
-#define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
 //Global variables
@@ -72,19 +71,19 @@ void dataEntries() { // Entrada de dados
     int change;
     char file[20];
 
-    //Limpa tela
+    // Limpa tela
     clearScreen();
 
-    //Linha superior
+    // Linha superior
     buildMenuTopLine();
 
-    //Menu item
+    // Menu item
     buildMenuItem(" 1 - Voltar");
     jumpLine(); // Pula linha
     buildMenuItem(" 2 - Escrever no arquivo");
     jumpLine(); // Pula linha
 
-    //Linha inferior
+    // Linha inferior
     buildMenuBottomLine();
 
     printf("\tEscolha uma das opcoes acima: ");
@@ -104,7 +103,7 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 1 produto: ");
             scanf("%s", &product1);
 
-            do{
+            do {
                 printf("\tDigite a quantidade de %s: ", product1);
                 scanf("%d", &amount1);
 
@@ -121,7 +120,6 @@ void dataEntries() { // Entrada de dados
             scanf("%s", &product2);
 
             do {
-
                 printf("\tDigite a quantidade de %s: ", product2);
                 scanf("%d", &amount2);
 
@@ -140,7 +138,6 @@ void dataEntries() { // Entrada de dados
 
 
             do {
-
                 printf("\tDigite a quantidade de %s: ", product3);
                 scanf("%d", &amount3);
 
@@ -166,6 +163,9 @@ void dataEntries() { // Entrada de dados
             fclose(f);
 
             clearScreen();
+            printf(GRN "\tProdutos adicionados com sucesso." RESET);
+            Sleep(2500);
+
             dataEntries();
             break;
         default:
@@ -340,15 +340,14 @@ void dataSearchLetter() { //Pesquisar dados por letra
 
             f = fopen("product.txt", "r");
 
+            printf("\tProduto(s):\n");
+
             for(i = 0; i < 3; i++) {
                 fread(&product1, sizeof(product1), 1, f);
                 fread(&amount1, sizeof(amount1), 1, f);
 
                 if(product == product1[0]) {
-                    printf("\tNome procurado: \n");
                     printf("\t%s: %d unidade(s)\n", product1, amount1);
-
-                    jumpLine();
 
                     j++;
                 }
@@ -359,9 +358,13 @@ void dataSearchLetter() { //Pesquisar dados por letra
                 printf("\tNenhum registro encontrado.\n");
                 Sleep(2000);
                 clearScreen();
+                dataSearchLetter();
+                return;
             }
 
             fclose(f);
+
+            jumpLine();
 
             dataSearchLetter();
 
@@ -380,19 +383,19 @@ void dataSearchLetter() { //Pesquisar dados por letra
 void dataEdit() { // Alterar dados
     int change;
 
-    //Limpa tela
+    // Limpa tela
     clearScreen();
 
-    //Linha superior
+    // Linha superior
     buildMenuTopLine();
 
-    //Menu item
+    // Menu item
     buildMenuItem(" 1 - Voltar");
     jumpLine(); // Pula linha
     buildMenuItem(" 2 - Alterar dados");
     jumpLine(); // Pula linha
 
-    //Linha inferior
+    // Linha inferior
     buildMenuBottomLine();
 
     printf("\tEscolha uma das opcoes acima: ");
@@ -432,8 +435,21 @@ void dataEdit() { // Alterar dados
 
             printf("\tAlterar %s ->: ", product1);
             scanf("%s", &product1);
-            printf("\tAlterar %d unidade(s) ->: ", amount1);
-            scanf("%d", &amount1);
+
+            int aux;
+            aux = amount1;
+
+            do {
+
+                printf("\tAlterar %d unidade(s) ->: ", aux);
+                scanf("%d", &amount1);
+
+                if(amount1 < 0 || amount1 == 10) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros negativos ou o numero 10.\n" RESET);
+                    jumpLine();
+                }
+
+            } while(amount1 < 0 || amount1 == 10);
 
             fseek(f, n_bytes, 0);
 
@@ -441,6 +457,10 @@ void dataEdit() { // Alterar dados
             fwrite(&amount1, sizeof(amount1), 1, f);
 
             fclose(f);
+
+            clearScreen();
+            printf(GRN "\tProduto alterado(a) com sucesso." RESET);
+            Sleep(2500);
 
             dataEdit();
             break;
@@ -458,16 +478,19 @@ void dataEdit() { // Alterar dados
 void dataDelete() { // Excluir dados
     int change;
 
-    //Linha superior
+    // Limpa tela
+    clearScreen();
+
+    // Linha superior
     buildMenuTopLine();
 
-    //Menu item
+    // Menu item
     buildMenuItem(" 1 - Voltar");
     jumpLine(); // Pula linha
     buildMenuItem(" 2 - Excluir dados");
     jumpLine(); // Pula linha
 
-    //Linha inferior
+    // Linha inferior
     buildMenuBottomLine();
 
     printf("\tEscolha uma das opcoes acima: ");
@@ -506,8 +529,6 @@ void dataDelete() { // Excluir dados
             fread(&product1, sizeof(product1), 1, f);
             fread(&amount1, sizeof(amount1), 1, f);
 
-            printf(GRN "\t%s excluido(a) com sucesso.\n" RESET, product1);
-
             product1[0] = '*';
             amount1 = NULL;
 
@@ -517,6 +538,10 @@ void dataDelete() { // Excluir dados
             fwrite(&amount1, sizeof(amount1), 1, f);
 
             fclose(f);
+
+            clearScreen();
+            printf(GRN "\tProduto excluido(a) com sucesso." RESET);
+            Sleep(2500);
 
             dataDelete();
 
@@ -651,7 +676,6 @@ void menu() { // Menu
             dataEdit();
             break;
         case 6:
-            clearScreen();
             dataDelete();
             break;
         case 7:
