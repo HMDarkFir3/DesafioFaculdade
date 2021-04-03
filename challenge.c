@@ -104,52 +104,52 @@ void dataEntries() { // Entrada de dados
             printf("\tDigite o 1 produto: ");
             scanf("%s", &product1);
 
-            backHere1: //GOTO
+            do{
+                printf("\tDigite a quantidade de %s: ", product1);
+                scanf("%d", &amount1);
 
-            printf("\tDigite a quantidade de %s: ", product1);
-            scanf("%d", &amount1);
+                if(amount1 < 0 || amount1 == 10) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros negativos ou o numero 10.\n" RESET);
+                    jumpLine();
+                }
 
-            if(amount1 < 0) {
-                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
-
-                jumpLine();
-                goto backHere1;
-            }
+            } while(amount1 < 0 || amount1 == 10);
 
             jumpLine(); // Pula linha
 
             printf("\tDigite o 2 produto: ");
             scanf("%s", &product2);
 
-            backHere2: // GOTO
+            do {
 
-            printf("\tDigite a quantidade de) %s: ", product2);
-            scanf("%d", &amount2);
+                printf("\tDigite a quantidade de %s: ", product2);
+                scanf("%d", &amount2);
 
-            if(amount2 < 0) {
-                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
+                if(amount2 < 0 || amount2 == 10) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros negativos ou o numero 10.\n" RESET);
+                    jumpLine();
+                }
 
-                jumpLine();
-                goto backHere2;
-            }
-
+            } while(amount2 < 0 || amount2 == 10);
 
             jumpLine(); // Pula linha
 
             printf("\tDigite o 3 produto: ");
             scanf("%s", &product3);
 
-            backHere3: // GOTO
 
-            printf("\tDigite a quantidade de %s: ", product3);
-            scanf("%d", &amount3);
 
-            if(amount3 < 0) {
-                printf(YEL "\tATENCAO: Nao pode digitar numeros negativos.\n" RESET);
+            do {
 
-                jumpLine();
-                goto backHere3;
-            }
+                printf("\tDigite a quantidade de %s: ", product3);
+                scanf("%d", &amount3);
+
+                if(amount3 < 0 || amount3 == 10) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros negativos ou o numero 10.\n" RESET);
+                    jumpLine();
+                }
+
+            } while(amount3 < 0 || amount3 == 10);
 
             // Produto 1
             fwrite(&product1, sizeof(product1), 1, f);
