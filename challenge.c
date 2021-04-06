@@ -2,10 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <ctype.h>
+#include <string.h>
 
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
 #define RESET "\x1B[0m"
 
 //Global variables
@@ -15,6 +18,27 @@ char product3[20];
 int amount1 = 0;
 int amount2 = 0;
 int amount3 = 0;
+
+char validation[52] = {
+    'a', 'b', 'c',
+    'd', 'e', 'f',
+    'g', 'h', 'i',
+    'j', 'k', 'l',
+    'm', 'n', 'o',
+    'p', 'q', 'r',
+    's', 't', 'u',
+    'v', 'w', 'x',
+    'y', 'z',
+    'A', 'B', 'C',
+    'D', 'E', 'F',
+    'G', 'H', 'I',
+    'J', 'K', 'L',
+    'M', 'N', 'O',
+    'P', 'Q', 'R',
+    'S', 'T', 'U',
+    'V', 'W', 'X',
+    'Y', 'Z',
+};
 
 //Utils ------------------------------------------------------|X*
 void clearScreen() { // Limpa tela
@@ -60,6 +84,7 @@ int searchName() {
             return i;
         }
     }
+
     fclose(f);
     return -1;
 }
@@ -69,7 +94,6 @@ int searchName() {
 // 1 --|--
 void dataEntries() { // Entrada de dados
     int change;
-    char file[20];
 
     // Limpa tela
     clearScreen();
@@ -100,9 +124,32 @@ void dataEntries() { // Entrada de dados
 
             f = fopen("product.txt", "w");
 
-            printf("\tDigite o 1 produto: ");
-            scanf("%s", &product1);
+            int i, j;
+            int validate;
 
+            // Validação produto 1
+            do {
+                validate = 0;
+
+                printf("\tDigite o 1 produto: ");
+                scanf("%s", &product1);
+
+                for(i = 0; i < strlen(product1); i++) {
+                    for(j = 0; j < strlen(validation); j++) {
+                        if(product1[i] == validation[j]) {
+                            validate++;
+                        }
+                    }
+                }
+
+                if(validate != strlen(product1)) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros e/ou caracteres especiais.\n" RESET);
+                    jumpLine();
+                }
+
+            } while(validate != strlen(product1));
+
+            // Validação quatidade 1
             do {
                 printf("\tDigite a quantidade de %s: ", product1);
                 scanf("%d", &amount1);
@@ -116,9 +163,29 @@ void dataEntries() { // Entrada de dados
 
             jumpLine(); // Pula linha
 
-            printf("\tDigite o 2 produto: ");
-            scanf("%s", &product2);
+            // Validação produto 2
+            do {
+                validate = 0;
 
+                printf("\tDigite o 2 produto: ");
+                scanf("%s", &product2);
+
+                for(i = 0; i < strlen(product2); i++) {
+                    for(j = 0; j < strlen(validation); j++) {
+                        if(product2[i] == validation[j]) {
+                            validate++;
+                        }
+                    }
+                }
+
+                if(validate != strlen(product2)) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros e/ou caracteres especiais.\n" RESET);
+                    jumpLine();
+                }
+
+            } while(validate != strlen(product2));
+
+            // Validação quatidade 2
             do {
                 printf("\tDigite a quantidade de %s: ", product2);
                 scanf("%d", &amount2);
@@ -132,11 +199,25 @@ void dataEntries() { // Entrada de dados
 
             jumpLine(); // Pula linha
 
-            printf("\tDigite o 3 produto: ");
-            scanf("%s", &product3);
+            // Validação produto 3
+            do {
+                printf("\tDigite o 3 produto: ");
+                scanf("%s", &product3);
 
+                for(i = 0; i < strlen(product3); i++) {
+                    for(j = 0; j < strlen(validation); j++) {
+                        validate++;
+                    }
+                }
 
+                if(validate != strlen(product3)) {
+                    printf(YEL "\tATENCAO: Nao pode digitar numeros e/ou caracteres especiais.\n" RESET);
+                    jumpLine();
+                }
 
+            } while(validate != strlen(product3));
+
+            // Validação quatidade 3
             do {
                 printf("\tDigite a quantidade de %s: ", product3);
                 scanf("%d", &amount3);
@@ -210,10 +291,15 @@ void dataList() { // Listar dados
             f = fopen("product.txt", "r");
 
             if(f == NULL) {
-                printf("\tNenhum arquivo encontrado.");
-                Sleep(2000);
                 clearScreen();
-                dataList();
+                printf(YEL "\tATENCAO: Nenhum arquivo encontrado." RESET);
+                Sleep(2500);
+
+                clearScreen();
+                printf(BLU "\tRedirecionando para entrada de dados." RESET);
+                Sleep(2500);
+
+                dataEntries();
             }
 
             printf("\tProduto(s):\n");
@@ -561,8 +647,7 @@ void quit() { // Fechar o programa
 
     for(int i = 3; i >= 0; i--) {
         clearScreen();
-        printf("\tFinalizando o programa... Aguarde.\n");
-        printf("\t%d\n", i);
+        printf("\tFinalizando o programa... %d Aguarde.\n", i);
         Sleep(1000);
     }
 
