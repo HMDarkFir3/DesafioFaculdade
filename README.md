@@ -42,10 +42,10 @@ Para clonar e executar este aplicativo, você precisará do [Git](https://git-sc
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/HMDarkFir3/DesafioFaculdade.git
+$ git clone https://github.com/HMDarkFir3/DesafioFaculdade_01.git
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd DesafioFaculdade
+$ cd DesafioFaculdade_01
 ```
 
 ## 🚀 Tecnologias Utilizadas
